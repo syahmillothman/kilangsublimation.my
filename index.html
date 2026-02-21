@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kilang Sublimation - Perkhidmatan Percetakan Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <style>
+        /* General Styling */
+        body { font-family: sans-serif; }
+        .bg-gradient-hero {
+            background: linear-gradient(135deg, #4c66ff 0%, #a400ff 100%);
+            color: white;
+        }
+        .text-yellow { color: #f4d03f; } /* Used for highlight text */
+        
+        /* Navbar */
+        .navbar-brand img { height: 30px; margin-right: 5px; }
+        .navbar-nav .nav-link { color: #333; }
+        .navbar.scrolled {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hero Section */
+        #hero { 
+            padding: 80px 0; 
+            position: relative;
+            overflow: hidden;
+        }
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        #hero h1 { 
+            font-size: 3rem; 
+            font-weight: 700;
+            animation: fadeInUp 1s ease-out;
+        }
+        #hero p { 
+            font-size: 1.1rem;
+            animation: fadeInUp 1.2s ease-out;
+        }
+        .hero-img-container {
+            position: relative;
+            animation: fadeInRight 1.5s ease-out;
+            margin-top: 0;
+            align-self: center;
+        }
+        .hero-img {
+            max-height: 500px;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: all 0.5s ease;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 1;
+            display: block;
+        }
+        .hero-img:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+            border-color: rgba(244, 208, 63, 0.5);
+        }
+        .hero-img-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(135deg, rgba(244, 208, 63, 0.3), rgba(164, 0, 255, 0.3));
+            border-radius: 25px;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            filter: blur(20px);
+        }
+        .hero-img-container:hover::before {
+            opacity: 1;
+        }
+        .hero-img-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(76, 102, 255, 0.3) 0%,
+                transparent 20%,
+                transparent 80%,
+                rgba(164, 0, 255, 0.3) 100%
+            ),
+            linear-gradient(
+                to right,
+                rgba(76, 102, 255, 0.2) 0%,
+                transparent 30%,
+                transparent 70%,
+                rgba(164, 0, 255, 0.2) 100%
+            );
+            border-radius: 20px;
+            z-index: 2;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .hero-buttons {
+            animation: fadeInUp 1.4s ease-out;
+        }
+
+        /* Services Section */
+        .service-card {
+            border-radius: 15px;
+            padding: 20px;
+            height: 100%;
+            transition: transform 0.3s;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+        }
+        .card-shirt { background-color: #f7f9ff; }
+        .card-banner { background-color: #f5f0ff; }
+        .card-lanyards { background-color: #f0fff5; }
+        .card-dtf { background-color: #fff5f0; }
+        .service-card h3 { margin-top: 0.5rem; }
+
+        /* Gallery Section */
+        .gallery-item img,
+        .gallery-item .figure-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s;
+            cursor: pointer;
+            display: block;
+        }
+        .gallery-item {
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 1 / 1; /* keep tiles square and uniform */
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+        .gallery-item .figure {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            display: block;
+        }
+        .gallery-item img:hover,
+        .gallery-item .figure-img:hover {
+            transform: scale(1.05);
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        /* Lightbox Modal Styling */
+        .lightbox-modal .modal-body {
+            padding: 0;
+        }
+        .lightbox-img {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        .lightbox-caption {
+            text-align: center;
+            padding-top: 0.5rem;
+        }
+        .lightbox-nav {
+            font-size: 1.75rem;
+            color: #fff;
+            background: rgba(0,0,0,0.35);
+            border: none;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            z-index: 1051;
+        }
+
+        /* Why Choose Us Section */
+        #why-choose-us {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        .why-point { margin-bottom: 25px; }
+        .why-icon {
+            font-size: 2rem;
+            color: #4c66ff;
+            background-color: #e6ebff;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .sublimation-img { max-height: 400px; object-fit: cover; border-radius: 8px; }
+
+        /* Contact Section */
+        #contact {
+            background-color: #212529;
+            color: white;
+            padding: 80px 0;
+        }
+        .contact-info-block { margin-bottom: 20px; }
+        .contact-icon { font-size: 1.5rem; color: #f4d03f; width: 30px; }
+        .form-control, .form-select {
+            background-color: #343a40;
+            border: 1px solid #495057;
+            color: white;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #343a40;
+            color: white;
+            border-color: #a400ff;
+            box-shadow: 0 0 0 0.25rem rgba(164, 0, 255, 0.25);
+        }
+        .btn-send-message {
+            background-color: #f9a825; /* Orange/Yellow */
+            border: none;
+            color: #212529;
+            font-weight: bold;
+            padding: 10px 0;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #000000;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .footer-link, .footer-contact a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+        }
+        .footer-link:hover, .footer-contact a:hover {
+            color: white;
+        }
+        .social-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: white;
+        }
+        .social-icon:hover { color: #f4d03f; }
+
+        /* Floating Agent Button */
+        .floating-agent-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            background: linear-gradient(135deg, #f4d03f 0%, #f9a825 100%);
+            color: #212529;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 25px;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(244, 208, 63, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: floatAnimation 3s ease-in-out infinite, pulseAnimation 2s ease-in-out infinite;
+            text-decoration: none;
+        }
+        .floating-agent-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(244, 208, 63, 0.6);
+        }
+        .floating-agent-btn i {
+            font-size: 1.2rem;
+        }
+        @keyframes floatAnimation {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        @keyframes pulseAnimation {
+            0%, 100% {
+                box-shadow: 0 4px 15px rgba(244, 208, 63, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 25px rgba(244, 208, 63, 0.7);
+            }
+        }
+        @media (max-width: 575.98px) {
+            .floating-agent-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            .floating-agent-btn span {
+                display: none;
+            }
+            .floating-agent-btn::after {
+                content: "Agent?";
+                display: inline;
+            }
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 991.98px) {
+            #hero h1 { font-size: 2.5rem; }
+            .hero-img { max-height: 400px; }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 575.98px) {
+            #hero h1 { font-size: 2rem; }
+            .hero-img { 
+                max-height: 300px;
+                border-radius: 15px;
+            }
+            .hero-img-container::before {
+                top: -5px;
+                left: -5px;
+                right: -5px;
+                bottom: -5px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="56">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#hero">
+                <img src="images/logo-svg.svg" alt="KS Logo" style="height: 31.5px; margin-right: 5px;">
+                <span class="ms-2 fw-bold text-dark">Kilang Sublimation</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Perkhidmatan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#gallery">Galeri</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">Tentang Kami</a>
+                    </li>
+                </ul>
+                <a href="#contact" class="btn btn-primary ms-lg-3">Hubungi</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="bg-gradient-hero pt-5 pt-lg-0">
+        <div class="container">
+            <div class="row align-items-center py-5">
+                <div class="col-lg-6 order-lg-1 d-flex flex-column justify-content-center">
+                    <h1 class="mt-5 mt-lg-0">Perkhidmatan <span class="text-yellow">Percetakan Sublimation</span> Profesional</h1>
+                    <p class="mt-3 mb-4">Ubah idea anda menjadi cetakan yang menakjubkan. Kami pakar dalam baju kustom, sepanduk, dan lanyard dengan teknologi sublimation berkualiti premium.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="btn btn-warning btn-lg me-3 mb-2">Mulakan Pesanan Anda</a>
+                        <a href="#gallery" class="btn btn-outline-light btn-lg mb-2">Lihat Portfolio</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 order-lg-2 mt-4 mt-lg-0 text-center d-flex align-items-center">
+                    <div class="hero-img-container w-100">
+                        <img src="images/hero-building.jpg" alt="Kilang Sublimation Building" class="img-fluid hero-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-5">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-1">Perkhidmatan Premium Kami</h2>
+            <p class="mb-5 text-muted">Kami menyediakan penyelesaian percetakan berkualiti tinggi untuk semua keperluan kustom anda.</p>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card card-shirt shadow-sm">
+                        <img src="images/Mockup.png" class="img-fluid rounded mb-3" alt="Custom Shirt Printing">
+                        <h3 class="h5 fw-bold">Percetakan Baju Kustom</h3>
+                        <p class="text-muted">Percetakan sublimation berkualiti tinggi pada pelbagai jenis baju. Sesuai untuk acara, pasukan, dan reka bentuk peribadi.</p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Kualiti fabrik premium</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Warna terang dan tahan lama</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Semua saiz tersedia</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card card-banner shadow-sm">
+                         <img src="images/Banner.jpeg" class="img-fluid rounded mb-3" alt="Banner Printing">
+                        <h3 class="h5 fw-bold">Percetakan Sepanduk</h3>
+                        <p class="text-muted">Sepanduk menarik untuk acara, pengiklanan, dan promosi. Bahan tahan cuaca dan tahan lasak.</p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Percetakan format besar</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Tahan cuaca</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Saiz kustom</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card card-lanyards shadow-sm">
+                         <img src="images/Lanyard.png" class="img-fluid rounded mb-3" alt="Custom Lanyards">
+                        <h3 class="h5 fw-bold">Lanyard Kustom</h3>
+                        <p class="text-muted">Lanyard profesional untuk acara korporat, persidangan, dan tujuan pengenalan.</p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Pengebrandan korporat</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Bahan selesa</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Pesanan pukal tersedia</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="service-card card-dtf shadow-sm">
+                         <img src="images/DTF.jpg" class="img-fluid rounded mb-3" alt="DTF Printing">
+                        <h3 class="h5 fw-bold">Perkhidmatan DTF</h3>
+                        <p class="text-muted">Percetakan Direct to Film (DTF) berkualiti tinggi untuk pelbagai jenis fabrik. Teknologi terkini untuk hasil yang menakjubkan.</p>
+                        <ul class="list-unstyled text-start small">
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Boleh digunakan pada pelbagai fabrik</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Cetakan tahan lama dan fleksibel</li>
+                            <li><i class="bi bi-check-circle-fill text-success me-2"></i>Kualiti cetakan yang tajam</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="display-5 fw-bold mb-1">Galeri Karya Kami</h2>
+            <p class="mb-5 text-muted">Lihat kualiti dan kreativiti dalam projek terkini kami.</p>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="images/Mesin.jpg" alt="Baju Cetak Tersuai"></div>
+                <div class="gallery-item"><img src="images/PRINT.jpeg" alt="Proses Percetakan Sublimation"></div>
+                <div class="gallery-item">
+                    <figure class="figure m-0">
+                        <img src="images/customer_1.jpg" alt="Hasil Pelanggan 1" class="figure-img img-fluid">
+                        <figcaption class="figure-caption small text-muted">Hasil Pelanggan 1</figcaption>
+                    </figure>
+                </div>
+                <div class="gallery-item">
+                    <figure class="figure m-0">
+                        <img src="images/customer_2.jpg" alt="Hasil Pelanggan 2" class="figure-img img-fluid">
+                        <figcaption class="figure-caption small text-muted">Hasil Pelanggan 2</figcaption>
+                    </figure>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Modal for Gallery -->
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg lightbox-modal">
+        <div class="modal-content bg-transparent border-0">
+          <div class="modal-body p-0 position-relative text-center">
+            <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button class="lightbox-nav position-absolute start-0 ms-2" id="lightboxPrev" aria-label="Previous">&lsaquo;</button>
+            <img src="" alt="" id="lightboxImage" class="lightbox-img img-fluid rounded">
+            <button class="lightbox-nav position-absolute end-0 me-2" id="lightboxNext" aria-label="Next">&rsaquo;</button>
+            <div id="lightboxCaption" class="lightbox-caption small text-muted mt-2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="about" class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h2 class="display-5 fw-bold mb-4">Mengapa Pilih Kilang Sublimation?</h2>
+                    <p class="mb-4">Dengan pengalaman bertahun-tahun dalam percetakan sublimation, kami menyediakan kualiti dan perkhidmatan yang luar biasa melebihi jangkaan.</p>
+
+                    <div class="d-flex why-point">
+                        <div class="flex-shrink-0 why-icon me-3">
+                            <i class="bi bi-patch-check-fill"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold">Kualiti Premium</h4>
+                            <p class="text-muted small mb-0">Teknologi sublimation canggih memastikan cetakan yang terang dan tahan lama.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex why-point">
+                        <div class="flex-shrink-0 why-icon me-3">
+                            <i class="bi bi-clock-history"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold">Penghantaran Pantas</h4>
+                            <p class="text-muted small mb-0">Pemprosesan dan penghantaran pantas tanpa menjejaskan kualiti.</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex why-point">
+                        <div class="flex-shrink-0 why-icon me-3">
+                            <i class="bi bi-palette-fill"></i>
+                        </div>
+                        <div>
+                            <h4 class="h6 fw-bold">Reka Bentuk Kustom</h4>
+                            <p class="text-muted small mb-0">Wujudkan visi kreatif anda dengan perkhidmatan reka bentuk kustom kami.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mt-4 mt-lg-0 text-center">
+                    <img src="images/location.png" alt="Kilang Sublimation Location" style="width: 100%; height: 400px; object-fit: cover; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold">Hubungi Kami</h2>
+                <p class="lead">Bersedia untuk memulakan projek percetakan anda? Hubungi kami hari ini!</p>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4 mb-lg-0">
+                            <h3 class="h4 fw-bold mb-4">Maklumat Hubungan</h3>
+                            
+                            <div class="d-flex align-items-center contact-info-block">
+                                <div class="contact-icon me-3"><i class="bi bi-geo-alt-fill"></i></div>
+                                <div>
+                                    <small class="d-block">Alamat</small>
+                                    <p class="mb-0">LOT 2, INKUBATOR INDUSTRI DESA(IID), PEKAN AJIL 21800 AJIL TERENGGANU</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center contact-info-block">
+                                <div class="contact-icon me-3"><i class="bi bi-telephone-fill"></i></div>
+                                <div>
+                                    <small class="d-block">Telefon</small>
+                                    <p class="mb-0">+60 19-280 4490 / +60 19-243 4490</p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center contact-info-block">
+                                <div class="contact-icon me-3"><i class="bi bi-envelope-fill"></i></div>
+                                <div>
+                                    <small class="d-block">E-mel</small>
+                                    <p class="mb-0">admin@kilangsublimation.my</p>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex align-items-center contact-info-block">
+                                <div class="contact-icon me-3"><i class="bi bi-clock-fill"></i></div>
+                                <div>
+                                    <small class="d-block">Waktu Operasi</small>
+                                    <p class="mb-0">8:30PG - 5:00PTG</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <h3 class="h4 fw-bold mb-4">Hantar Mesej kepada Kami</h3>
+                            <form id="contactForm">
+                                <div class="mb-3">
+                                    <input type="text" id="contactName" name="name" class="form-control form-control-lg" placeholder="Nama Anda" required>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" id="contactEmail" name="email" class="form-control form-control-lg" placeholder="E-mel Anda" required>
+                                </div>
+                                <div class="mb-3">
+                                    <select id="contactService" name="service" class="form-select form-select-lg" required>
+                                        <option value="" disabled selected>Pilih Perkhidmatan</option>
+                                        <option value="shirt">Percetakan Baju Kustom</option>
+                                        <option value="banner">Percetakan Sepanduk</option>
+                                        <option value="lanyard">Lanyard Kustom</option>
+                                        <option value="dtf">Perkhidmatan DTF</option>
+                                        <option value="other">Pertanyaan Lain</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <textarea id="contactMessage" name="message" class="form-control form-control-lg" rows="4" placeholder="Mesej Anda" required></textarea>
+                                </div>
+                                <div id="formMessage" class="alert d-none mb-3"></div>
+                                <button type="submit" class="btn btn-send-message btn-lg w-100" id="submitBtn">Hantar Mesej</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <a class="d-flex align-items-center text-white text-decoration-none mb-3" href="#">
+                        <img src="images/logo-svg.svg" alt="KS Logo" style="height: 30px; margin-right: 5px;">
+                        <span class="ms-2 fw-bold text-white fs-5">Kilang Sublimation</span>
+                    </a>
+                    <p class="small">Rakan kongsi yang dipercayai untuk perkhidmatan percetakan sublimation premium.</p>
+                    <a href="https://www.facebook.com/kilangsublimation.my" target="_blank" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="https://www.instagram.com/kilangsublimation.my" target="_blank" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="https://wa.me/60192804490" target="_blank" class="social-icon"><i class="bi bi-whatsapp"></i></a>
+                </div>
+
+                <div class="col-md-2 mb-4">
+                    <h6 class="text-white fw-bold mb-3">Perkhidmatan</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#services" class="footer-link">Percetakan Baju</a></li>
+                        <li><a href="#services" class="footer-link">Percetakan Sepanduk</a></li>
+                        <li><a href="#services" class="footer-link">Percetakan Lanyard</a></li>
+                        <li><a href="#services" class="footer-link">Perkhidmatan DTF</a></li>
+                        <li><a href="#about" class="footer-link">Reka Bentuk Kustom</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-4 footer-contact">
+                    <h6 class="text-white fw-bold mb-3">Maklumat Hubungan</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="bi bi-telephone-fill me-2 text-warning"></i><a href="tel:+60192804490">+60 19-280 4490 / +60 19-243 4490</a></li>
+                        <li><i class="bi bi-envelope-fill me-2 text-warning"></i><a href="mailto:admin@kilangsublimation.com.my">admin@kilangsublimation.my</a></li>
+                        <li><i class="bi bi-geo-alt-fill me-2 text-warning"></i>LOT 2, INKUBATOR INDUSTRI DESA(IID), PEKAN AJIL 21800 AJIL TERENGGANU</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="text-white-50">
+            <div class="text-center small pt-3">
+                &copy; 2026 Kilang Sublimation. Hak cipta terpelihara.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Agent Button -->
+    <a href="register.html" class="floating-agent-btn" id="agentBtn">
+        <i class="bi bi-person-badge"></i>
+        <span>Berminat Nak Jadi Ejen?</span>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainNav = document.getElementById('mainNav');
+            window.addEventListener('scroll', function() {
+                // Add 'scrolled' class when window is scrolled past 50px
+                if (window.scrollY > 50) {
+                    mainNav.classList.add('scrolled');
+                } else {
+                    mainNav.classList.remove('scrolled');
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    // Only apply if the link is not the "Get Quote" button which opens a modal
+                    if (this.getAttribute('data-bs-toggle') !== 'modal') {
+                        e.preventDefault();
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close the navbar on mobile after clicking a link
+                        const navbarCollapse = document.getElementById('navbarNav');
+                        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                            const bsCollapse = new bootstrap.Collapse(navbarCollapse, { toggle: false });
+                            bsCollapse.hide();
+                        }
+                    }
+                });
+            });
+
+            // Contact Form Submission
+            const contactForm = document.getElementById('contactForm');
+            const formMessage = document.getElementById('formMessage');
+            const submitBtn = document.getElementById('submitBtn');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Get form values
+                    const name = document.getElementById('contactName').value;
+                    const email = document.getElementById('contactEmail').value;
+                    const service = document.getElementById('contactService').options[document.getElementById('contactService').selectedIndex].text;
+                    const message = document.getElementById('contactMessage').value;
+                    
+                    // Create email subject and body
+                    const subject = encodeURIComponent(`Pertanyaan dari ${name} - ${service}`);
+                    const body = encodeURIComponent(`Nama: ${name}\nE-mel: ${email}\nPerkhidmatan: ${service}\n\nMesej:\n${message}`);
+                    
+                    // Create mailto link
+                    const mailtoLink = `mailto:admin@kilangsublimation.com.my?subject=${subject}&body=${body}`;
+                    
+                    // Disable submit button
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Membuka E-mel...';
+                    
+                    // Open email client
+                    window.location.href = mailtoLink;
+                    
+                    // Show success message
+                    setTimeout(() => {
+                        formMessage.className = 'alert alert-success';
+                        formMessage.textContent = 'E-mel anda akan dibuka. Sila hantar mesej melalui aplikasi e-mel anda.';
+                        formMessage.classList.remove('d-none');
+                        
+                        // Reset button
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Hantar Mesej';
+                        
+                        // Hide message after 5 seconds
+                        setTimeout(() => {
+                            formMessage.classList.add('d-none');
+                        }, 5000);
+                    }, 500);
+                });
+            }
+
+            // Gallery Lightbox Initialization
+            (function() {
+                const galleryImgs = Array.from(document.querySelectorAll('.gallery-item img'));
+                const lightboxImage = document.getElementById('lightboxImage');
+                const lightboxCaption = document.getElementById('lightboxCaption');
+                const lightboxPrev = document.getElementById('lightboxPrev');
+                const lightboxNext = document.getElementById('lightboxNext');
+                const lightboxModalEl = document.getElementById('lightboxModal');
+                const lightboxModal = new bootstrap.Modal(lightboxModalEl);
+                let currentIndex = 0;
+
+                const galleryData = galleryImgs.map((img) => ({
+                    src: img.getAttribute('src'),
+                    alt: img.getAttribute('alt') || '',
+                    caption: (img.closest('figure') && img.closest('figure').querySelector('figcaption')) ? img.closest('figure').querySelector('figcaption').textContent.trim() : (img.getAttribute('alt') || '')
+                }));
+
+                function openLightbox(idx) {
+                    currentIndex = idx;
+                    lightboxImage.src = galleryData[idx].src;
+                    lightboxImage.alt = galleryData[idx].alt;
+                    lightboxCaption.textContent = galleryData[idx].caption || '';
+                    lightboxModal.show();
+                }
+
+                function showNext(delta) {
+                    currentIndex = (currentIndex + delta + galleryData.length) % galleryData.length;
+                    lightboxImage.src = galleryData[currentIndex].src;
+                    lightboxImage.alt = galleryData[currentIndex].alt;
+                    lightboxCaption.textContent = galleryData[currentIndex].caption || '';
+                }
+
+                galleryImgs.forEach((img, idx) => {
+                    img.style.cursor = 'pointer';
+                    img.addEventListener('click', () => openLightbox(idx));
+                });
+
+                lightboxPrev.addEventListener('click', (e) => { e.preventDefault(); showNext(-1); });
+                lightboxNext.addEventListener('click', (e) => { e.preventDefault(); showNext(1); });
+
+                document.addEventListener('keydown', function(e) {
+                    // Only respond to arrow keys when modal is open
+                    if (document.body.classList.contains('modal-open')) {
+                        if (e.key === 'ArrowLeft') showNext(-1);
+                        if (e.key === 'ArrowRight') showNext(1);
+                    }
+                });
+            })();
+        });
+    </script>
+</body>
+</html>

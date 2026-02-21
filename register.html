@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log Masuk | Kilang Sublimation</title>
+  <style>
+    :root{
+      --bg1:#e9dccb;   /* warm beige */
+      --bg2:#cfd3df;   /* cool grey */
+      --purple:#9b82c9;
+      --deep:#1f2a6b;
+      --deep2:#2e3b9a;
+      --teal:#3bb7b8;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#94a3b8;
+      --line:#e2e8f0;
+      --blue:#1f7bf2;
+      --shadow: 0 20px 60px rgba(15, 23, 42, .18);
+      --radius: 14px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      overflow:hidden;
+      position: relative;
+    }
+    body::before{
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('images/hero-building.jpg') center center / cover no-repeat, linear-gradient(135deg, rgba(76, 102, 255, 0.3) 0%, rgba(164, 0, 255, 0.3) 100%);
+      filter: blur(5px);
+      z-index: -1;
+    }
+
+    /* --- full background geometry --- */
+    .stage{
+      position:relative;
+      height:100%;
+      width:100%;
+      padding: 26px;
+    }
+
+    .frame{
+      height:100%;
+      border-radius: 6px;
+      overflow:hidden;
+      position:relative;
+      background: transparent;
+    }
+
+    /* giant diagonal purple panel */
+    .purple-slab{
+      position:absolute;
+      inset:-25% auto -25% -25%;
+      width: 65%;
+      background: var(--purple);
+      transform: rotate(-27deg);
+      box-shadow: inset 0 0 0 10px rgba(255,255,255,.0);
+      z-index:1;
+    }
+
+    /* dark blue triangles behind */
+    .tri{
+      position:absolute;
+      z-index:0;
+      opacity:1;
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,.12));
+    }
+    .tri.t1{
+      right: 18%;
+      top: 22%;
+      width: 56vw;
+      max-width: 920px;
+      height: 46vw;
+      max-height: 760px;
+      background: linear-gradient(135deg, var(--deep), var(--deep2));
+      clip-path: polygon(40% 0, 100% 50%, 55% 100%, 0 70%);
+      transform: rotate(6deg);
+    }
+    .tri.t2{
+      right: -6%;
+      bottom: -18%;
+      width: 52vw;
+      max-width: 880px;
+      height: 38vw;
+      max-height: 620px;
+      background: linear-gradient(135deg, #2a2f7a, #1b2560);
+      clip-path: polygon(20% 0, 100% 35%, 70% 100%, 0 70%);
+      transform: rotate(-10deg);
+      opacity:.95;
+    }
+    .tri.t3{
+      right: 10%;
+      bottom: -10%;
+      width: 34vw;
+      max-width: 560px;
+      height: 26vw;
+      max-height: 440px;
+      background: linear-gradient(135deg, #46c0c1, #2a8d9b);
+      clip-path: polygon(35% 0, 100% 45%, 60% 100%, 0 75%);
+      transform: rotate(8deg);
+      opacity:.95;
+    }
+
+    /* content layout */
+    .content{
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 24px;
+      padding: 34px 44px;
+    }
+
+    /* left brand */
+    .brand{
+      width: 48%;
+      min-width: 320px;
+      display:flex;
+      flex-direction:column;
+      gap: 22px;
+      align-items:center;
+      padding-left: 0;
+    }
+
+    .logo{
+      width: 180px;
+      height: 180px;
+      border-radius: 999px;
+      background: #ffffff;
+      display:grid;
+      place-items:center;
+      box-shadow: 0 18px 40px rgba(0,0,0,.15);
+      border: none;
+      position:relative;
+      animation: fadeInScale 0.8s ease-out both;
+      margin-bottom: 24px;
+    }
+    /* “double ring” look */
+    .logo img{
+      width: 110%;
+      height: 110%;
+      position:relative;
+      z-index:2;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.15));
+      object-fit: contain;
+      transition: transform 0.3s ease;
+      padding: 0;
+    }
+    .logo:hover img{
+      transform: scale(1.05) rotate(5deg);
+    }
+
+    .welcome{
+      color:#fff;
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing:.2px;
+      text-shadow: 0 8px 20px rgba(0,0,0,.15);
+      max-width: 520px;
+      line-height: 1.25;
+      animation: fadeInUp 0.8s ease-out 0.3s both;
+      text-align: center;
+    }
+
+    /* right card */
+    .card{
+      width: 44%;
+      min-width: 360px;
+      max-width: 560px;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 54px 58px;
+      animation: slideInRight 0.8s ease-out 0.2s both;
+    }
+
+    .card h1{
+      margin:0;
+      text-align:center;
+      font-size: 30px;
+      letter-spacing:.2px;
+      animation: fadeInUp 0.6s ease-out 0.4s both;
+    }
+    .subtitle{
+      margin-top: 6px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 14px;
+      animation: fadeInUp 0.6s ease-out 0.5s both;
+    }
+
+    .form{
+      margin-top: 34px;
+      display:flex;
+      flex-direction:column;
+      gap: 16px;
+    }
+
+    .input{
+      width:100%;
+      height: 48px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      outline:none;
+      font-size: 15px;
+      color: var(--text);
+      background:#fff;
+      transition: all 0.3s ease;
+      animation: fadeIn 0.6s ease-out both;
+    }
+    .input:nth-child(1) { animation-delay: 0.4s; }
+    .input:nth-child(2) { animation-delay: 0.5s; }
+    .input:focus{
+      border-color: rgba(31,123,242,.55);
+      box-shadow: 0 0 0 4px rgba(31,123,242,.12);
+      transform: translateY(-2px);
+    }
+
+    .row{
+      display:flex;
+      justify-content:flex-end;
+      margin-top: 2px;
+    }
+    .link{
+      color: var(--blue);
+      text-decoration:none;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .link:hover{ text-decoration:underline; }
+
+    .btn{
+      margin-top: 8px;
+      height: 52px;
+      border:none;
+      border-radius: 6px;
+      background: var(--blue);
+      color:#fff;
+      font-size: 16px;
+      font-weight: 650;
+      cursor:pointer;
+      box-shadow: 0 12px 24px rgba(31,123,242,.22);
+      transition: all 0.3s ease;
+      animation: fadeIn 0.6s ease-out 0.6s both;
+    }
+    .btn:hover{ 
+      filter: brightness(.98);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(31,123,242,.3);
+    }
+    .btn:active{ transform: translateY(0px); }
+
+    .foot{
+      margin-top: 18px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .foot a{ color: var(--blue); text-decoration:none; font-weight:600; }
+    .foot a:hover{ text-decoration:underline; }
+
+    .back-btn{
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--text);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeInLeft 0.6s ease-out both;
+    }
+    .back-btn:hover{
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0,0,0,.2);
+    }
+
+    /* Animations */
+    @keyframes fadeInScale {
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes slideInRight {
+      from {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* responsive */
+    @media (max-width: 980px){
+      body{ overflow:auto; }
+      .frame{ height:auto; min-height: calc(100vh - 52px); }
+      .content{
+        flex-direction:column;
+        padding: 28px 18px 34px;
+      }
+      .brand, .card{ width:100%; max-width: 680px; }
+      .brand{ align-items:center; text-align:center; padding-left:0; }
+      .welcome{ font-size: 22px; }
+      .purple-slab{
+        inset:-40% auto -40% -40%;
+        width: 120%;
+        transform: rotate(-18deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="index.html" class="back-btn">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Kembali
+  </a>
+  <div class="stage">
+    <div class="frame">
+      <!-- content -->
+      <div class="content">
+        <section class="brand" aria-label="Brand panel">
+          <div class="logo" aria-hidden="true">
+            <img src="images/logo-svg.svg" alt="KS Logo" role="img" aria-label="KS Logo">
+          </div>
+
+          <div class="welcome">Selamat datang ke kilang sublimation</div>
+        </section>
+
+        <section class="card" aria-label="Login card">
+          <h1>Log Masuk</h1>
+          <div class="subtitle">Kilang Sublimation</div>
+
+          <form class="form" onsubmit="event.preventDefault();">
+            <input class="input" type="text" placeholder="Nama Penuh" autocomplete="name" />
+            <input class="input" type="text" placeholder="Nama Pengguna" autocomplete="username" />
+            <input class="input" type="email" placeholder="Email" autocomplete="email" />
+            <input class="input" type="tel" placeholder="Nombor Telefon" autocomplete="tel" />
+            <input class="input" type="password" placeholder="Kata Laluan" autocomplete="new-password" />
+            <input class="input" type="password" placeholder="Pengesahan Kata Laluan" autocomplete="new-password" />
+
+            <button class="btn" type="submit">Daftar</button>
+
+            <div class="foot">
+              Sudah Ahli? <a href="index.html">Log Masuk</a>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
